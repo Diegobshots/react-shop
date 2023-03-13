@@ -1,5 +1,5 @@
 import './Cart.css'
-import { useId } from 'react'
+import { useId, useEffect, useState } from 'react'
 import { CartIcon, ClearCartIcon, RemoveFromCartIcon } from './Icons.jsx'
 import { useCart } from '../hooks/useCart.js'
 
@@ -26,16 +26,24 @@ function CartItem ({ product, addToCart, removeFromCart }) {
 export function Cart () {
   const cartCheckboxId = useId()
   const { cart, clearCart, addToCart, removeFromCart } = useCart()
+  const [animateCart, setAnimateCart] = useState(false)
+
+  useEffect(() => {
+    setAnimateCart(true)
+    setTimeout(() => {
+      setAnimateCart(false)
+    }, 1000)
+  }, [cart])
 
   return (
     <>
-      <label htmlFor={cartCheckboxId} className='cart-button'>
+      <label htmlFor={cartCheckboxId} className={`cart-button fixed m-4 ${animateCart ? 'animate-bounce' : ''}`}>
         <CartIcon />
       </label>
       <input type='checkbox' hidden id={cartCheckboxId} />
 
-      <aside className='cart'>
-        <ul>
+      <aside className='cart shadow-lg transition-all ease-in-out z-50'>
+        <ul className='mt-16'>
           {
             cart.map(product => (
               <CartItem
@@ -54,7 +62,7 @@ export function Cart () {
               <button onClick={clearCart}><ClearCartIcon /></button>
               )
             : (
-              <p>Cart is empty</p>
+              <p className='text-xl pt-8'>Cart is empty</p>
               )
         }
 

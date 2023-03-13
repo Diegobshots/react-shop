@@ -8,9 +8,7 @@
 
 }
 
-input[type="range"] {
-    cursor: grab;
-}
+
 
 .filters > div {
     display: flex;
